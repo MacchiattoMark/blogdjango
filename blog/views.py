@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .models import Post, Category
 from comments.forms import CommentForm
 
+
 def index(request):
     post_list = Post.objects.all()
     return render(request, 'blog/index.html', context={'post_list': post_list})
@@ -11,6 +12,9 @@ def index(request):
 
 def detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+
+    post.increase_views()
+
     # return render(request, 'blog/detail.html', context={'post': post})
     post.body = markdown.markdown(post.body,
                                   extensions=[
